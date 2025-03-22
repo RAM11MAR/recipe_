@@ -2,24 +2,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/core/routing/routes.dart';
-import 'package:recipe/features/reviews/managers/create_review/create_review_bloc.dart';
-import 'package:recipe/features/reviews/managers/reviews/reviews_bloc.dart';
+import 'package:recipe/features/category_detail/manager/category_detail_view_model.dart';
+import 'package:recipe/features/category_detail/pages/category_detail_view.dart';
+import 'package:recipe/features/community/manager/community_cubit.dart';
+import 'package:recipe/features/community/pages/community_view.dart';
+import 'package:recipe/features/home/pages/home_view.dart';
+import 'package:recipe/features/recipe_detail/manager/recipe_detail_view_model.dart';
+import 'package:recipe/features/recipe_detail/pages/recipe_detail_view.dart';
 import 'package:recipe/features/reviews/pages/create_review_view.dart';
 import 'package:recipe/features/reviews/pages/reviews_view.dart';
+import 'package:recipe/features/top_chefs/pages/top_chefs_view.dart';
+import 'package:recipe/features/trending_recipes/manager/trending_recipes_bloc.dart';
+import 'package:recipe/features/trending_recipes/pages/trending_recipes_view.dart';
 
 import '../../features/categories/managers/categories_cubit.dart';
 import '../../features/categories/pages/categories_view.dart';
-import '../../features/category_detail/manager/category_detail_view_model.dart';
-import '../../features/category_detail/pages/category_detail_view.dart';
-import '../../features/community/manager/community_cubit.dart';
-import '../../features/community/pages/community_view.dart';
 import '../../features/home/manager/home_view_model.dart';
-import '../../features/home/pages/home_view.dart';
-import '../../features/recipe_detail/manager/recipe_detail_view_model.dart';
-import '../../features/recipe_detail/pages/recipe_detail_view.dart';
+import '../../features/reviews/managers/create_review/create_review_bloc.dart';
+import '../../features/reviews/managers/reviews/reviews_bloc.dart';
+import '../../features/top_chefs/managers/top_chefs_bloc.dart';
+import '../../features/top_chefs/pages/top_chef_profile_view.dart';
 
 final router = GoRouter(
-  initialLocation: Routes.categories,
+  initialLocation: Routes.topChefProfile,
   routes: [
     GoRoute(
       path: Routes.home,
@@ -35,14 +40,18 @@ final router = GoRouter(
     GoRoute(
       path: Routes.community,
       builder: (context, state) => BlocProvider(
-        create: (context) => CommunityCubit(recipeRepo: context.read()),
+        create: (context) => CommunityCubit(
+          recipeRepo: context.read(),
+        ),
         child: CommunityView(),
       ),
     ),
     GoRoute(
       path: Routes.categories,
       builder: (context, state) => BlocProvider(
-        create: (context) => CategoriesBloc(catRepo: context.read()),
+        create: (context) => CategoriesBloc(
+          catRepo: context.read(),
+        ),
         child: CategoriesView(),
       ),
     ),
@@ -68,17 +77,6 @@ final router = GoRouter(
       ),
     ),
     GoRoute(
-      path: Routes.reviews,
-      builder: (context, state) => BlocProvider(
-        create: (context) => ReviewsBloc(
-          recipeRepo: context.read(),
-          reviewRepo: context.read(),
-          recipeId: int.parse(state.pathParameters['recipeId']!),
-        ),
-        child: ReviewsView(),
-      ),
-    ),
-    GoRoute(
       path: Routes.createReview,
       builder: (context, state) => BlocProvider(
         create: (context) => CreateReviewBloc(
@@ -86,6 +84,39 @@ final router = GoRouter(
           reviewRepo: context.read(),
         )..add(CreateReviewLoading(recipeId: int.parse(state.pathParameters['recipeId']!))),
         child: CreateReviewView(),
+      ),
+    ),
+    GoRoute(
+      path: Routes.reviews,
+      builder: (context, state) => BlocProvider(
+        create: (context) => ReviewsBloc(
+          recipeRepo: context.read(),
+          recipeId: int.parse(state.pathParameters['recipeId']!),
+          reviewsRepo: context.read(),
+        ),
+        child: ReviewsView(),
+      ),
+    ),
+    GoRoute(
+      path: Routes.topChefs,
+      builder: (context, state) => BlocProvider(
+        create: (context) => TopChefsBloc(
+          chefRepo: context.read(),
+        ),
+        child: TopChefsView(),
+      ),
+    ),
+    GoRoute(
+      path: Routes.topChefProfile,
+      builder: (context, state) => TopChefProfileView(),
+    ),
+    GoRoute(
+      path: Routes.trendingRecipes,
+      builder: (context, state) => BlocProvider(
+        create: (context) => TrendingRecipesBloc(
+          recipeRepo: context.read(),
+        ),
+        child: TrendingRecipesView(),
       ),
     ),
   ],

@@ -1,9 +1,8 @@
 part of 'reviews_bloc.dart';
 
-sealed class ReviewsEvent {}
+sealed class ReviewsEvents{}
 
-final class ReviewsLoading extends ReviewsEvent {
+final class ReviewsLoading extends ReviewsEvents{
   final int recipeId;
-
   ReviewsLoading({required this.recipeId});
 }

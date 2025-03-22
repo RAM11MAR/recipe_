@@ -1,3 +1,4 @@
+
 class Routes {
   static const String home = '/home';
   static const String categories = '/categories';
@@ -6,6 +7,9 @@ class Routes {
   static const String community = '/community';
   static const String reviews = '/reviews/:recipeId';
   static const String createReview = '/create-review/:recipeId';
+  static const String topChefs = '/top-chefs';
+  static const String topChefProfile ='/top-chef-profile';
+  static const String trendingRecipes ='/trending-recipes';
 
   static String getRecipeDetail(int recipeId) => '/recipe-detail/$recipeId';
 
